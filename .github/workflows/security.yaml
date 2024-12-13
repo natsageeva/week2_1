@@ -46,28 +46,28 @@ jobs:
       #     path: target/iameter.war
       #     retention-days: 1
 
-  # semgrep:
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   container:
-  #     image: returntocorp/semgrep:latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #       with:
-  #         token: ${{ github.token }}
+  semgrep:
+    needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: returntocorp/semgrep:latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ github.token }}
       
-  #     - name: Create reports directory
-  #       run: mkdir -p reports
+      - name: Create reports directory
+        run: mkdir -p reports
       
-  #     - name: Semgrep Security Scan with Autofix
-  #       run: |
-  #         semgrep scan \
-  #           --config "p/java" \
-  #           --config "p/secrets" \
-  #           --config "p/owasp-top-ten" \
-  #           --output reports/semgrep-results.sarif \
-  #           --sarif \
-  #           --autofix || true
+      - name: Semgrep Security Scan with Autofix
+        run: |
+          semgrep scan \
+             --config "p/python" \
+             --config "p/secrets" \
+             --config "p/owasp-top-ten" \
+             --output reports/semgrep-results.sarif \
+             --sarif \
+             --autofix || true
           
   #     - name: Create Pull Request with fixes
   #       uses: peter-evans/create-pull-request@v5
@@ -84,18 +84,18 @@ jobs:
   #         base: main
   #         delete-branch: true
           
-  #     - name: Upload SARIF file
-  #       uses: github/codeql-action/upload-sarif@v2
-  #       with:
-  #         sarif_file: reports/semgrep-results.sarif
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: reports/semgrep-results.sarif
 
           
-  #     - name: Upload Semgrep Results
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: semgrep-results
-  #         path: reports/semgrep-results.sarif
-  #         retention-days: 14
+      - name: Upload Semgrep Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: semgrep-results
+          path: reports/semgrep-results.sarif
+          retention-days: 14
 
   # zap_scan:
   #   needs: build
