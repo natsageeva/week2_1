@@ -139,7 +139,7 @@ jobs:
 
       - name: Upload Tomcat Logs
         if: always()
-        uses: actions/upload-artifact@4
+        uses: actions/upload-artifact@v4
         with:
           name: tomcat-logs
           path: apache-tomcat-9.0.83/logs/
